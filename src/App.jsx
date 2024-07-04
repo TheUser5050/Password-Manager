@@ -15,6 +15,7 @@ function App() {
       e.target.blur();
     }
   };
+
   return (
     <>
       <NavBar />
