@@ -3,7 +3,7 @@ import discordLogo from "/.SVG/discord.svg";
 const PassCard = () => {
   return (
     <>
-      <div className="flex gap-5">
+      <div className="flex gap-5 my-3">
         <div className="flex items-center">
           <span className="material-symbols-outlined">keyboard_arrow_down</span>
           <img src={discordLogo} className="h-10" />
@@ -16,7 +16,7 @@ const PassCard = () => {
           <span className="material-symbols-outlined px-2">edit</span>
         </div>
       </div>
-      <PassInput />
+      {/* <PassInput /> */}
     </>
   );
 };

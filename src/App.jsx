@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import NavBar from "./components/NavBar";
 import PassCard from "./components/PassCard";
+import PassInput from "./components/PassInput";
 
 function App() {
   const [search, setSearch] = useState("");
@@ -19,7 +20,7 @@ function App() {
   return (
     <>
       <NavBar />
-      <div className="flex items-center rounded-full justify-center my-4 w-screen">
+      <div className="flex items-center rounded-full justify-center my-3 w-screen">
         <span className="material-symbols-outlined text-3xl bg-gray-700 rounded-l-full px-2 border border-gray-300 text-gray-300">
           search
         </span>
@@ -45,6 +46,7 @@ function App() {
           close
         </span>
       </div>
+      <PassInput />
       <PassCard />
     </>
   );
