@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { setApp, setPassword, setUsername } from "../features/querySlice";
 
 const PassInput = () => {
   const {
@@ -8,11 +10,20 @@ const PassInput = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const query = useSelector((state) => state.counter.myObject);
+  const dispatch = useDispatch();
+
   const handleSave = (data) => {
-    console.log(data);
+    // console.log(data);
+    dispatch(setUsername(data.username));
+    dispatch(setPassword(data.password));
+    dispatch(setApp(data.apps));
+    console.log(query);
   };
   useEffect(() => {
     console.log("This is my log");
+    // console.log(query);
   }, []);
 
   return (
@@ -21,10 +32,10 @@ const PassInput = () => {
         <label htmlFor="apps">Select your application:-</label>
         <select
           className="bg-gray-500 outline-0 w-[80vw] text-xl rounded-full px-2 block mx-2"
-          name="apps"
+          {...register("apps")}
         >
-          <option value="discord">Discord</option>
-          <option value="instagram">instagram</option>
+          <option value="Discord">Discord</option>
+          <option value="Instagram">instagram</option>
         </select>
         <label htmlFor="username">User Name:-</label>
         <input

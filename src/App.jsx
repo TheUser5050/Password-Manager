@@ -3,9 +3,14 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 import PassCard from "./components/PassCard";
 import PassInput from "./components/PassInput";
+import { query } from "./components/context/context";
+import { useDispatch, useSelector } from "react-redux";
 
 function App() {
   const [search, setSearch] = useState("");
+  const count = useSelector((state) => state.counter.value);
+  const dispatch = useDispatch();
+
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
@@ -48,6 +53,8 @@ function App() {
       </div>
       <PassInput />
       <PassCard />
+      <p>{count}</p>
+      <button>+</button>
     </>
   );
 }

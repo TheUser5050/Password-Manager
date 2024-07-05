@@ -1,5 +1,5 @@
 import PassInput from "./PassInput";
-import discordLogo from "/.SVG/discord.svg";
+import discordLogo from "/.SVG/Discord.svg";
 const PassCard = () => {
   return (
     <>
