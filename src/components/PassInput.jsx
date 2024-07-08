@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { setApp, setPassword, setUsername } from "../features/querySlice";
+import { addToArray } from "../features/listSlice";
 
 const PassInput = () => {
   const {
@@ -11,18 +11,18 @@ const PassInput = () => {
     formState: { errors },
   } = useForm();
 
-  const query = useSelector((state) => state.counter.myObject);
+  const list = useSelector((state) => state.list.myArray);
   const dispatch = useDispatch();
 
+  const [i, setI] = useState(0);
+
   const handleSave = (data) => {
-    // console.log(data);
-    dispatch(setUsername(data.username));
-    dispatch(setPassword(data.password));
-    dispatch(setApp(data.apps));
-    console.log(query);
+    data.id = setI(i + 1);
+    dispatch(addToArray(data));
+    console.log(list);
   };
   useEffect(() => {
-    console.log("This is my log");
+    // console.log("This is my log");
     // console.log(query);
   }, []);
 
@@ -35,7 +35,15 @@ const PassInput = () => {
           {...register("apps")}
         >
           <option value="Discord">Discord</option>
-          <option value="Instagram">instagram</option>
+          <option value="Instagram">Instagram</option>
+          <option value="Github">Github</option>
+          <option value="Gitlab">Gitlab</option>
+          <option value="Dropbox">Dropbox</option>
+          <option value="Facebook">Facebook</option>
+          <option value="Reddit">Reddit</option>
+          <option value="Pinterest">Pinterest</option>
+          <option value="TwitterX">TwitterX</option>
+          <option value="Linkedin">Linkedin</option>
         </select>
         <label htmlFor="username">User Name:-</label>
         <input

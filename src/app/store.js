@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import queryReducer from "../features/querySlice";
+import listReducer from "../features/listSlice";
 
 export const store = configureStore({
   reducer: {
-    counter: queryReducer,
+    list: listReducer,
   },
 });

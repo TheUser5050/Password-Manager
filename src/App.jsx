@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import NavBar from "./components/NavBar";
 import PassCard from "./components/PassCard";
 import PassInput from "./components/PassInput";
-import { query } from "./components/context/context";
 import { useDispatch, useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 
 function App() {
   const [search, setSearch] = useState("");
-  const count = useSelector((state) => state.counter.value);
+  const [listCard, setListCard] = useState([]);
+  const list = useSelector((state) => state.list.myArray);
   const dispatch = useDispatch();
 
   const handleSearch = (e) => {
@@ -52,9 +53,16 @@ function App() {
         </span>
       </div>
       <PassInput />
-      <PassCard />
-      <p>{count}</p>
-      <button>+</button>
+      {list.map((item) => {
+        return (
+          <PassCard
+            app={item.apps}
+            username={item.username}
+            password={item.password}
+            key={uuidv4()}
+          />
+        );
+      })}
     </>
   );
 }
