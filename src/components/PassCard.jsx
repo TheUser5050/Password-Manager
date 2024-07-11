@@ -20,7 +20,11 @@ const PassCard = (props) => {
           </div>
         </div>
       </div>
-      <PassShow username={props.username} password={props.password} />
+      <PassShow
+        username={props.username}
+        password={props.password}
+        passid={props.id}
+      />
     </div>
   );
 };

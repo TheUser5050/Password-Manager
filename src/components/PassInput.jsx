@@ -1,30 +1,28 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { addToArray } from "../features/listSlice";
+import { v4 as uuidv4 } from "uuid";
+import { addToId } from "../features/idSlice";
 
 const PassInput = () => {
   const {
     register,
-    watch,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
   const list = useSelector((state) => state.list.myArray);
+  const id = useSelector((state) => state.id.myId);
   const dispatch = useDispatch();
 
-  const [i, setI] = useState(0);
-
   const handleSave = (data) => {
-    data.id = setI(i + 1);
-    dispatch(addToArray(data));
+    const newData = { ...data, id: uuidv4() };
+    dispatch(addToId(newData.id));
+    dispatch(addToArray(newData));
     console.log(list);
+    // console.log(id);
   };
-  useEffect(() => {
-    // console.log("This is my log");
-    // console.log(query);
-  }, []);
 
   return (
     <div className="max-sm:z-30 max-sm:top-0 px-2 border border-x-0 border-gray-500 py-4">
