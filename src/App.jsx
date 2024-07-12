@@ -5,12 +5,16 @@ import PassCard from "./components/PassCard";
 import PassInput from "./components/PassInput";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
+import { changeIsInList } from "./features/isInCard";
 
 function App() {
   const [search, setSearch] = useState("");
   const [listCard, setListCard] = useState([]);
   const list = useSelector((state) => state.list.myArray);
+  const isInCard = useSelector((state) => state.incard.myIsInCard);
   const dispatch = useDispatch();
+  // const isInCard = useSelector((state) => state.card.myCard);
+  const [filterList, setFilterList] = useState([]);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -22,6 +26,45 @@ function App() {
       e.target.blur();
     }
   };
+
+  useEffect(() => {
+    // if (list.lengtg > 1) {
+    //   list.forEach((item) => {
+    //     if (item.apps == isInCard.apps) {
+    //       dispatch(changeIsInList(true));
+    //       console.log("The apps are equal");
+    //     } else {
+    //       dispatch(changeIsInList(false));
+    //     }
+    //   });
+    // }
+    // console.log(isInCard);
+    // isInCard.isInList == false && setFilterList([...filterList, isInCard]);
+    if (list.length > 0) {
+      let isInList = false;
+      let item = list[list.length - 1];
+      let apps = [];
+      for (let i = 0; i <= list.length - 2; i++) {
+        if (item.apps === list[i].apps) {
+          isInList = true;
+        }
+        // console.log(item.apps, list[i]);
+      }
+      list.forEach((item) => {
+        if (!isInList && !item.isUpdated) {
+          list.forEach((item) => {
+            apps = [...apps, item.apps];
+          });
+          setFilterList([...filterList, item]);
+        }
+      });
+      // console.log(filterList);
+      console.log(list);
+      // console.log(apps);
+      // console.log("The useEffect for list triggered");
+    }
+    // console.log(list[list.length - 1]);
+  }, [list]);
 
   return (
     <>
@@ -53,14 +96,14 @@ function App() {
         </span>
       </div>
       <PassInput />
-      {list.map((item) => {
+      {filterList.map((item) => {
         return (
           <PassCard
             app={item.apps}
             username={item.username}
             password={item.password}
-            key={uuidv4()}
             id={item.id}
+            key={uuidv4()}
           />
         );
       })}

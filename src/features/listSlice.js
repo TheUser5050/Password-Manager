@@ -14,6 +14,7 @@ export const listSlice = createSlice({
     },
     changeUsername: (state, action) => {
       const { id, name } = action.payload;
+      console.log(name);
       state.myArray.map((item) => {
         if (item.id === id) {
           item.username = name;
@@ -21,11 +22,18 @@ export const listSlice = createSlice({
       });
     },
     changePassword: (state, action) => {
-      const { newid, pass } = action.payload;
-      // console.log(pass);
+      const { id, password } = action.payload;
       state.myArray.map((item) => {
-        if (item.id === newid) {
-          item.password = pass;
+        if (item.id === id) {
+          item.password = password;
+        }
+      });
+    },
+    changeIsUpdated: (state, action) => {
+      const { id, isupdated } = action.payload;
+      state.myArray.map((item) => {
+        if (item.id === id) {
+          item.isUpdated = isupdated;
         }
       });
     },
@@ -33,6 +41,7 @@ export const listSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { addToArray, changeUsername, changePassword } = listSlice.actions;
+export const { addToArray, changeUsername, changePassword, changeIsUpdated } =
+  listSlice.actions;
 
 export default listSlice.reducer;

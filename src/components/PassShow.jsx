@@ -2,7 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { addToId } from "../features/idSlice";
-import { changePassword, changeUsername } from "../features/listSlice";
+import {
+  changeIsUpdated,
+  changePassword,
+  changeUsername,
+} from "../features/listSlice";
 
 const PassShow = (props) => {
   const {
@@ -12,6 +16,7 @@ const PassShow = (props) => {
     formState: { errors },
   } = useForm();
 
+  const list = useSelector((state) => state.list.myArray);
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -19,8 +24,10 @@ const PassShow = (props) => {
   const handleChange = (data) => {
     let id = props.passid;
     dispatch(changeUsername({ id, name }));
-    let pass = data.password;
-    dispatch(changePassword({ id, pass }));
+    dispatch(changePassword({ id, password }));
+    let isupdated = true;
+    dispatch(changeIsUpdated({ id, isupdated }));
+    // console.log(password);
   };
 
   useEffect(() => {
@@ -40,17 +47,19 @@ const PassShow = (props) => {
           onChange={(e) => {
             setName(e.target.value);
           }}
+          id="username"
         />
         {errors.username && <p>You have to change the email before saving</p>}
         <label htmlFor="password">Password:-</label>
         <input
-          type="password"
+          type="text"
           {...register("password", { required: true })}
           value={password}
           className="text-black"
           onChange={(e) => {
             setPassword(e.target.value);
           }}
+          id="password"
         />
         {errors.password && <p>You have to change password before saving</p>}
         <input type="submit" value="submit" />

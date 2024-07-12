@@ -1,6 +1,18 @@
+import { useSelector } from "react-redux";
 import PassShow from "./PassShow";
+import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const PassCard = (props) => {
+  const list = useSelector((state) => state.list.myArray);
+  const [filterPass, setFilterPass] = useState([]);
+  useEffect(() => {
+    let newList = list.filter((item) => {
+      return item.apps === props.app;
+    });
+    setFilterPass(newList);
+    // console.log(list);
+  }, [list]);
   return (
     <div>
       <div>
@@ -20,11 +32,16 @@ const PassCard = (props) => {
           </div>
         </div>
       </div>
-      <PassShow
-        username={props.username}
-        password={props.password}
-        passid={props.id}
-      />
+      {filterPass.map((item) => {
+        return (
+          <PassShow
+            username={item.username}
+            password={item.password}
+            passid={item.id}
+            key={uuidv4()}
+          />
+        );
+      })}
     </div>
   );
 };

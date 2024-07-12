@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToArray } from "../features/listSlice";
 import { v4 as uuidv4 } from "uuid";
 import { addToId } from "../features/idSlice";
+import { addToIsInCard } from "../features/isInCard";
+// import { addToCard } from "../features/cardSlice";
 
 const PassInput = () => {
   const {
@@ -17,9 +19,11 @@ const PassInput = () => {
   const dispatch = useDispatch();
 
   const handleSave = (data) => {
-    const newData = { ...data, id: uuidv4() };
+    const newData = { ...data, id: uuidv4(), isUpdated: false };
     dispatch(addToId(newData.id));
     dispatch(addToArray(newData));
+    dispatch(addToIsInCard({ ...newData, isInList: false }));
+    // dispatch(addToCard({ ...newData, isInList: false }));
     console.log(list);
     // console.log(id);
   };
@@ -31,6 +35,7 @@ const PassInput = () => {
         <select
           className="bg-gray-500 outline-0 w-[80vw] text-xl rounded-full px-2 block mx-2"
           {...register("apps")}
+          id="apps"
         >
           <option value="Discord">Discord</option>
           <option value="Instagram">Instagram</option>
@@ -54,6 +59,8 @@ const PassInput = () => {
               message: "This field is required",
             },
           })}
+          id="username"
+          autoComplete="email"
         />
         {errors.username && <p>{errors.username.message}</p>}
         <label htmlFor="password">Password:-</label>
@@ -64,6 +71,8 @@ const PassInput = () => {
           {...register("password", {
             required: { value: true, message: "Thus field is required" },
           })}
+          id="password"
+          autoComplete="current-password"
         />
         {errors.password && <p>{errors.password.message}</p>}
         <input
