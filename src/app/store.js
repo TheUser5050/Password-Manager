@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import listReducer from "../features/listSlice";
-import idReducer from "../features/idSlice";
+import deleteReducer from "../features/deleteSlice";
 import isInCardReducer from "../features/isInCard";
 
 export const store = configureStore({
   reducer: {
     list: listReducer,
-    id: idReducer,
     incard: isInCardReducer,
+    isdelete: deleteReducer,
   },
 });

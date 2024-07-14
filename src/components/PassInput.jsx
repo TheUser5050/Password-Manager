@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { addToArray } from "../features/listSlice";
 import { v4 as uuidv4 } from "uuid";
-import { addToId } from "../features/idSlice";
 import { addToIsInCard } from "../features/isInCard";
 // import { addToCard } from "../features/cardSlice";
 
@@ -13,19 +12,15 @@ const PassInput = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [showPassword, setShowPassword] = useState(false);
 
   const list = useSelector((state) => state.list.myArray);
-  const id = useSelector((state) => state.id.myId);
   const dispatch = useDispatch();
 
   const handleSave = (data) => {
     const newData = { ...data, id: uuidv4(), isUpdated: false };
-    dispatch(addToId(newData.id));
     dispatch(addToArray(newData));
     dispatch(addToIsInCard({ ...newData, isInList: false }));
-    // dispatch(addToCard({ ...newData, isInList: false }));
-    console.log(list);
-    // console.log(id);
   };
 
   return (
@@ -33,7 +28,7 @@ const PassInput = () => {
       <form onSubmit={handleSubmit(handleSave)}>
         <label htmlFor="apps">Select your application:-</label>
         <select
-          className="bg-gray-500 outline-0 w-[80vw] text-xl rounded-full px-2 block mx-2"
+          className="bg-gray-500 outline-0 w-[80vw] text-xl rounded-full px-2 block mx-2 w-[91vw]"
           {...register("apps")}
           id="apps"
         >
@@ -52,7 +47,7 @@ const PassInput = () => {
         <input
           type="email"
           name="username"
-          className="block mx-2 outline-0 bg-gray-700 rounded-full px-3 text-xl"
+          className="block mx-2 outline-0 bg-gray-700 rounded-full px-3 text-xl w-[91vw]"
           {...register("username", {
             required: {
               value: true,
@@ -64,16 +59,26 @@ const PassInput = () => {
         />
         {errors.username && <p>{errors.username.message}</p>}
         <label htmlFor="password">Password:-</label>
-        <input
-          type="password"
-          name="password"
-          className="block mx-2 outline-0 bg-gray-700 rounded-full px-2 text-xl"
-          {...register("password", {
-            required: { value: true, message: "Thus field is required" },
-          })}
-          id="password"
-          autoComplete="current-password"
-        />
+        <span className="flex items-center gap-0 w-[91vw]">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            className="block ml-2 outline-0 bg-gray-700 rounded-l-full px-2 text-xl inline"
+            {...register("password", {
+              required: { value: true, message: "Thus field is required" },
+            })}
+            id="password"
+            autoComplete="current-password"
+          />
+          <span
+            className="material-symbols-outlined bg-gray-700 rounded-r-full text-xl px-2"
+            onClick={(e) => {
+              setShowPassword(!showPassword);
+            }}
+          >
+            {showPassword ? "visibility_off" : "visibility"}
+          </span>
+        </span>
         {errors.password && <p>{errors.password.message}</p>}
         <input
           className="text-black text-xl rounded-full bg-orange-500 py-1 px-2 relative bottom-0 left-[80%] font-bold my-2"

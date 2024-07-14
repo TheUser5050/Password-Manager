@@ -21,7 +21,10 @@ const PassCard = (props) => {
             <span className="material-symbols-outlined">
               keyboard_arrow_down
             </span>
-            <img src={`/.SVG/${props.app}.svg`} className="h-10" />
+            <img
+              src={`/.SVG/${props.app}.svg`}
+              className={("h-10", props.app === "Github" ? "invert" : "")}
+            />
           </div>
           <div className="flex items-center gap-1">
             <div className="flex flex-col w-[67vw]">

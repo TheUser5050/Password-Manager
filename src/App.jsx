@@ -6,6 +6,7 @@ import PassInput from "./components/PassInput";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { changeIsInList } from "./features/isInCard";
+import listSlice from "./features/listSlice";
 
 function App() {
   const [search, setSearch] = useState("");
@@ -13,7 +14,7 @@ function App() {
   const list = useSelector((state) => state.list.myArray);
   const isInCard = useSelector((state) => state.incard.myIsInCard);
   const dispatch = useDispatch();
-  // const isInCard = useSelector((state) => state.card.myCard);
+  const isDelete = useSelector((state) => state.isdelete.Delete);
   const [filterList, setFilterList] = useState([]);
 
   const handleSearch = (e) => {
@@ -22,48 +23,48 @@ function App() {
 
   const handleKey = (e) => {
     if (e.key === "Enter") {
-      console.log(search);
       e.target.blur();
     }
   };
 
   useEffect(() => {
-    // if (list.lengtg > 1) {
-    //   list.forEach((item) => {
-    //     if (item.apps == isInCard.apps) {
-    //       dispatch(changeIsInList(true));
-    //       console.log("The apps are equal");
-    //     } else {
-    //       dispatch(changeIsInList(false));
-    //     }
-    //   });
-    // }
-    // console.log(isInCard);
-    // isInCard.isInList == false && setFilterList([...filterList, isInCard]);
     if (list.length > 0) {
       let isInList = false;
       let item = list[list.length - 1];
-      let apps = [];
       for (let i = 0; i <= list.length - 2; i++) {
         if (item.apps === list[i].apps) {
           isInList = true;
         }
-        // console.log(item.apps, list[i]);
       }
       list.forEach((item) => {
-        if (!isInList && !item.isUpdated) {
-          list.forEach((item) => {
-            apps = [...apps, item.apps];
-          });
+        if (!isInList && !item.isUpdated && !isDelete.value) {
           setFilterList([...filterList, item]);
         }
       });
-      // console.log(filterList);
-      console.log(list);
-      // console.log(apps);
-      // console.log("The useEffect for list triggered");
     }
-    // console.log(list[list.length - 1]);
+    if (list.length === 0) {
+      setFilterList([]);
+    } else if (isDelete.value) {
+      let newflist = [];
+      // Adding item to newflist variable with duplicate components
+      list.forEach((lists) => {
+        filterList.map((item) => {
+          if (item.apps === lists.apps) {
+            console.log(item);
+            newflist = [...newflist, item];
+          }
+        });
+      });
+      // Removing the duplicate items from newflist variable
+      let isInlist = -1;
+      for (let i = 0; i <= newflist.length - 2; i++) {
+        if (newflist[newflist.length - 1] === newflist[i]) {
+          isInlist = newflist.findIndex((obj) => obj.id === newflist[i].id);
+          newflist.splice(isInlist, 1);
+        }
+      }
+      setFilterList(newflist);
+    }
   }, [list]);
 
   return (
