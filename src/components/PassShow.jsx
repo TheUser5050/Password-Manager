@@ -40,45 +40,62 @@ const PassShow = (props) => {
   return (
     <>
       <form onSubmit={handleSubmit(handleChange)}>
-        <label htmlFor="username" className="mx-2">
-          Username:-
-        </label>
-        <input
-          type="email"
-          {...register("username", { required: true })}
-          value={name}
-          className="w-[91vw] mx-4 bg-gray-700 rounded-full text-xl outline-0"
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-          id="username"
-        />
-        {errors.username && <p>You have to change the email before saving</p>}
-        <label htmlFor="password" className="mx-2">
-          Password:-
-        </label>
-        <span className="flex items-center gap-0 w-[91vw] mx-4">
-          <input
-            type={showPassword ? "text" : "password"}
-            {...register("password", { required: true })}
-            value={password}
-            className="bg-gray-700 rounded-l-full text-xl w-full outline-0"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            id="password"
-          />
-          <span
-            className="material-symbols-outlined text-xl rounded-r-full bg-gray-700 px-2"
-            onClick={() => {
-              setShowPassword(!showPassword);
-            }}
-          >
-            {showPassword ? "visibility_off" : "visibility"}
+        <span className="sm:flex sm:flex-col sm:gap-3">
+          <span>
+            <label htmlFor="username" className="mx-2">
+              Username:-
+            </label>
+            <input
+              type="email"
+              {...register("username", { required: true })}
+              value={name}
+              className="w-[91vw] mx-4 bg-gray-700 rounded-full text-xl outline-0 sm:w-[38vw]"
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              id="username"
+            />
+            {errors.username && (
+              <p className="max-sm:text-[13px]">
+                You have to change the email before saving or rewrite the email
+              </p>
+            )}
+          </span>
+          <span>
+            <span className="sm:flex sm:items-center">
+              <label htmlFor="password" className="mx-2">
+                Password:-
+              </label>
+              <span className="flex items-center gap-0 w-[91vw] mx-4 sm:w-[38vw]">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  {...register("password", { required: true })}
+                  value={password}
+                  className="bg-gray-700 rounded-l-full text-xl w-full outline-0 sm:w-[38vw]"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                  id="password"
+                />
+                <span
+                  className="material-symbols-outlined text-xl rounded-r-full bg-gray-700 px-2"
+                  onClick={() => {
+                    setShowPassword(!showPassword);
+                  }}
+                >
+                  {showPassword ? "visibility_off" : "visibility"}
+                </span>
+              </span>
+            </span>
+            {errors.password && (
+              <p className="max-sm:text-[13px]">
+                You have to change password before saving or rewrite the
+                password
+              </p>
+            )}
           </span>
         </span>
-        {errors.password && <p>You have to change password before saving</p>}
-        <span className="flex items-center justify-end gap-4 px-3">
+        <span className="flex items-center justify-end gap-4 px-3 my-3">
           <button
             type="button"
             className="text-black bg-orange-500 py-1 px-2 rounded-full"

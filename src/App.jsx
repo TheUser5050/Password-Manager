@@ -5,8 +5,6 @@ import PassCard from "./components/PassCard";
 import PassInput from "./components/PassInput";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import { changeIsInList } from "./features/isInCard";
-import listSlice from "./features/listSlice";
 
 function App() {
   const [search, setSearch] = useState("");
@@ -77,7 +75,7 @@ function App() {
         <input
           type="search"
           name="search"
-          className="bg-gray-700 border text-xl h-[38px] border-gray-300 px-2 outline-0 border-r-0 w-[80%]"
+          className="bg-gray-700 border text-xl h-[38px] border-gray-300 px-2 outline-0 border-r-0 w-[80%] sm:w-[50%]"
           placeholder="Search"
           onChange={(e) => {
             handleSearch(e);
@@ -97,6 +95,11 @@ function App() {
         </span>
       </div>
       <PassInput />
+      {list.length == 0 && (
+        <p className="text-center my-full font-bold">
+          There is no password to show
+        </p>
+      )}
       {filterList.map((item) => {
         return (
           <PassCard
