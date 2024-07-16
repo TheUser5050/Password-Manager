@@ -29,18 +29,10 @@ const PassCard = (props) => {
               <span className="material-symbols-outlined">
                 keyboard_arrow_down
               </span>
-              <img
-                src={`/.SVG/${props.app}.svg`}
-                className={
-                  ((("h-10", props.app === "Github" ? "invert" : ""),
-                  "md:h-10 max-md:h-10"),
-                  props.app === "TwitterX" ? "invert" : "")
-                }
-              />
+              <img src={`/.SVG/${props.app}.svg`} className="h-10" />
             </div>
             <div className="flex  gap-0 flex-col">
               <h1 className="text-xl font-bold">{props.app}</h1>
-              <p>Created on Mar 25 ago</p>
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { act } from "react";
 
 const initialState = {
   myArray: [],
@@ -10,7 +11,7 @@ export const listSlice = createSlice({
   reducers: {
     addToArray: (state, action) => {
       // state.myArray = [...state.myArray, action.payload];
-      state.myArray.push(action.payload);
+      state.myArray = [...state.myArray, action.payload];
     },
     changeUsername: (state, action) => {
       const { id, name } = action.payload;
@@ -43,6 +44,12 @@ export const listSlice = createSlice({
         state.myArray.splice(index, 1);
       }
     },
+    addObject: (state, action) => {
+      action.payload.forEach((item) => {
+        state.myArray = [...state.myArray, item];
+        console.log(item);
+      });
+    },
   },
 });
 
@@ -53,6 +60,7 @@ export const {
   changePassword,
   changeIsUpdated,
   deleteList,
+  addObject,
 } = listSlice.actions;
 
 export default listSlice.reducer;

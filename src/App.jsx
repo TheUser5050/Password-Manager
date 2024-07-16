@@ -5,6 +5,7 @@ import PassCard from "./components/PassCard";
 import PassInput from "./components/PassInput";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
+import { addObject, addToArray, changeIsUpdated } from "./features/listSlice";
 
 function App() {
   const [search, setSearch] = useState("");
@@ -14,6 +15,7 @@ function App() {
   const dispatch = useDispatch();
   const isDelete = useSelector((state) => state.isdelete.Delete);
   const [filterList, setFilterList] = useState([]);
+  const [mysqlist, setMysqlist] = useState([]);
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
@@ -26,44 +28,74 @@ function App() {
   };
 
   useEffect(() => {
-    if (list.length > 0) {
-      let isInList = false;
-      let item = list[list.length - 1];
-      for (let i = 0; i <= list.length - 2; i++) {
-        if (item.apps === list[i].apps) {
-          isInList = true;
-        }
+    const obj = new Set();
+    for (let i = 0; i < list.length; i++) {
+      if (!obj.has(list[i].apps)) {
+        obj.add(list[i].apps);
       }
-      list.forEach((item) => {
-        if (!isInList && !item.isUpdated && !isDelete.value) {
-          setFilterList([...filterList, item]);
-        }
-      });
     }
+    let apps = Array.from(obj);
+    let newF = [];
+    apps.forEach((app) => {
+      let appToF = list.find((item) => item.apps === app);
+      newF.push(appToF);
+    });
+    setFilterList(newF);
+
     if (list.length === 0) {
       setFilterList([]);
-    } else if (isDelete.value) {
-      let newflist = [];
-      // Adding item to newflist variable with duplicate components
-      list.forEach((lists) => {
-        filterList.map((item) => {
-          if (item.apps === lists.apps) {
-            console.log(item);
-            newflist = [...newflist, item];
-          }
-        });
-      });
-      // Removing the duplicate items from newflist variable
-      let isInlist = -1;
-      for (let i = 0; i <= newflist.length - 2; i++) {
-        if (newflist[newflist.length - 1] === newflist[i]) {
-          isInlist = newflist.findIndex((obj) => obj.id === newflist[i].id);
-          newflist.splice(isInlist, 1);
-        }
-      }
-      setFilterList(newflist);
     }
+    // else if (isDelete.value) {
+    //   let newflist = [];
+    //   // Adding item to newflist variable with duplicate components
+    //   list.forEach((lists) => {
+    //     filterList.map((item) => {
+    //       if (item.apps === lists.apps) {
+    //         console.log(item);
+    //         newflist = [...newflist, item];
+    //       }
+    //     });
+    //   });
+    //   // Removing the duplicate items from newflist variable
+    //   let isInlist = -1;
+    //   for (let i = 0; i <= newflist.length - 2; i++) {
+    //     if (newflist[newflist.length - 1] === newflist[i]) {
+    //       isInlist = newflist.findIndex((obj) => obj.id === newflist[i].id);
+    //       newflist.splice(isInlist, 1);
+    //     }
+    //   }
+    //   setFilterList(newflist);
+    // }
+    console.log(list);
   }, [list]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let res = await fetch("http://localhost:3000/get/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      let json = await res.json();
+      for (let i = 0; i < json.length; i++) {
+        dispatch(addToArray(json[i]));
+      }
+      console.log(json);
+      setMysqlist(json);
+      // for (let i = 0; i < list.length; i++) {
+      //   let id = list[i].id;
+      //   let t = true,
+      //     f = false;
+      //   if (list[i].isUpdated == 0) {
+      //     dispatch(changeIsUpdated({ id, t }));
+      //   } else if (list[i].isUpdated == 1) {
+      //     dispatch(changeIsUpdated({ id, t }));
+      //   }
+      // }
+    };
+    fetchData();
+  }, []);
 
   return (
     <>

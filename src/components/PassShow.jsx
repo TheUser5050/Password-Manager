@@ -23,13 +23,21 @@ const PassShow = (props) => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleChange = (data) => {
+  const handleChange = async (data) => {
     let id = props.passid;
     dispatch(changeUsername({ id, name }));
     dispatch(changePassword({ id, password }));
     let isupdated = true;
     dispatch(changeIsUpdated({ id, isupdated }));
-    // console.log(password);
+    let res = await fetch("http://localhost:3000/edit/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id, username: name, password, isUpdated: true }),
+    });
+    let txt = await res.text();
+    console.log(txt);
   };
 
   useEffect(() => {
@@ -49,7 +57,7 @@ const PassShow = (props) => {
               type="email"
               {...register("username", { required: true })}
               value={name}
-              className="w-[91vw] mx-4 bg-gray-700 rounded-full text-xl outline-0 sm:w-[38vw]"
+              className="w-[91vw] mx-4 bg-gray-700 rounded-full text-xl outline-0 sm:w-[38vw] px-2"
               onChange={(e) => {
                 setName(e.target.value);
               }}
@@ -71,18 +79,21 @@ const PassShow = (props) => {
                   type={showPassword ? "text" : "password"}
                   {...register("password", { required: true })}
                   value={password}
-                  className="bg-gray-700 rounded-l-full text-xl w-full outline-0 sm:w-[38vw]"
+                  className="bg-gray-700 rounded-l-full text-xl w-full outline-0 sm:w-[38vw] px-2"
                   onChange={(e) => {
                     setPassword(e.target.value);
                   }}
                   id="password"
                 />
                 <span
-                  className="material-symbols-outlined text-xl rounded-r-full bg-gray-700 px-2"
+                  className="material-symbols-outlined text-xl bg-gray-700 px-2"
                   onClick={() => {
                     setShowPassword(!showPassword);
                   }}
                 >
+                  <span className="material-symbols-outlined text-xl bg-gray-700 px-2 rounded-r-full">
+                    content_copy
+                  </span>
                   {showPassword ? "visibility_off" : "visibility"}
                 </span>
               </span>
@@ -99,13 +110,22 @@ const PassShow = (props) => {
           <button
             type="button"
             className="text-black bg-orange-500 py-1 px-2 rounded-full"
-            onClick={() => {
+            onClick={async () => {
               dispatch(updateDelete(true));
               dispatch(updateDeleteId(props.passid));
               dispatch(deleteList(props.passid));
               setTimeout(() => {
                 dispatch(updateDelete(false));
               }, 1000);
+              let res = await fetch("http://localhost:3000/delete/", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ id: props.passid }),
+              });
+              let txt = await res.text();
+              console.log(txt);
             }}
           >
             Delete

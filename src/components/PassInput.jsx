@@ -17,10 +17,19 @@ const PassInput = (props) => {
   const list = useSelector((state) => state.list.myArray);
   const dispatch = useDispatch();
 
-  const handleSave = (data) => {
+  const handleSave = async (data) => {
     const newData = { ...data, id: uuidv4(), isUpdated: false };
     dispatch(addToArray(newData));
     dispatch(addToIsInCard({ ...newData, isInList: false }));
+    let res = await fetch("http://localhost:3000/create/", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(newData),
+    });
+    let txt = await res.text();
+    console.log(txt);
   };
 
   return (
@@ -85,7 +94,7 @@ const PassInput = (props) => {
                   required: { value: true, message: "Thus field is required" },
                 })}
                 id="password"
-                placeholder="Enter yourPassword"
+                placeholder="Enter your Password"
               />
               <span
                 className="material-symbols-outlined bg-gray-700 rounded-r-full text-xl px-2"
